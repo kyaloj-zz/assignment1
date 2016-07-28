@@ -14,7 +14,8 @@ function initMap() {
 
   onFileChange();  
   optimalRoute();
-
+  listenForOriginChange();
+  listenForDestinationChange();
 }
 
 
@@ -166,4 +167,18 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
     }
   });
 
+}
+
+
+
+function listenForOriginChange() {
+  var originAutocompleteText = new google.maps.places.Autocomplete(
+    document.getElementById('search-with-text-origin'));
+    originAutocompleteText.bindTo('bounds', map);
+}
+
+function listenForDestinationChange() {
+  var destinationAutocompleteText = new google.maps.places.Autocomplete(
+    document.getElementById('search-with-text-destination'));
+    destinationAutocompleteText.bindTo('bounds', map);
 }

@@ -2,20 +2,42 @@
 <html>
   <head>
     <link rel="stylesheet" type="text/css" href="css/index.css">
+    <link rel="stylesheet" type="text/css" href="css/materialize.min.css">
   </head>
   <body>
-  <input type="file" id="files" multiple>
-    <div id="map"></div>
-    <div>
-    <b>Start:</b>
-      <input id="search-with-text" type="text" placeholder="Ex: Kencom">
-    <br>
-    <b>End:</b>
-      <input id="search-with-text" type="text" placeholder="Ex: Kikuyu">
-    <br>
-      <input type="submit" id="submit" value="Show route">
+    <div class="container">
+      <div class="row main-row">
+         <!--  the map -->
+        <div class="col s10 map-column no-margin no-padding">
+           <div id="map"></div>
+        </div>
+
+      <!-- the filter pane -->
+
+        <div class="col s2 no-side-margin">
+          <div class="row simple-padding">
+             <input type="file" id="files" multiple>  
+          </div>
+
+           <div class="row simple-padding">
+             <label>Origin</label>
+             <input id="search-with-text-origin" type="text" placeholder="Ex: Kencom">
+          </div>
+
+           <div class="row simple-padding">
+              <label>Destination</label>
+              <input id="search-with-text-destination" type="text" placeholder="Ex: Kikuyu">
+          </div>
+
+          <div class="row simple-padding">
+            <input type="submit" id="submit" value="Show route">
+          </div>   
+        </div>  
+      </div>
+      
     </div>
-    <div id="directions-pane"></div>
+
+    <!-- js files -->
 
     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
