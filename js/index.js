@@ -1,7 +1,10 @@
 var map;
 var markers = [];
 var locations = [];
-
+var origin;
+var destination;
+var directionsService;
+var directionsDisplay; 
 // the brain function
 function initMap() { 
 
@@ -11,6 +14,8 @@ function initMap() {
     mapTypeControl: false
 
   });
+  directionsService = new google.maps.DirectionsService;
+  directionsDisplay = new google.maps.DirectionsRenderer; 
 
   onFileChange();  
   optimalRoute();
@@ -119,12 +124,9 @@ function makeMarkerIcon(link) {
   return markerImage;
 }
 
-function optimalRoute() {
-  var directionsService = new google.maps.DirectionsService;
-  var directionsDisplay = new google.maps.DirectionsRenderer;       
-  directionsDisplay.setMap(map);
+function optimalRoute() {     
   document.getElementById('submit').addEventListener('click', function() {
-    calculateAndDisplayRoute(directionsService, directionsDisplay);
+    geocodeLocationsOrigin();
   });
 }
 
@@ -142,8 +144,8 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
   }
 
   directionsService.route({
-    origin: new google.maps.LatLng(-1.262275, 36.816725),
-    destination: new google.maps.LatLng(-1.340846, 36.677082),
+    origin: origin,
+    destination: destination,
     waypoints: waypts,
     optimizeWaypoints: true,
     travelMode: google.maps.TravelMode.DRIVING
@@ -169,8 +171,6 @@ function calculateAndDisplayRoute(directionsService, directionsDisplay) {
 
 }
 
-
-
 function listenForOriginChange() {
   var originAutocompleteText = new google.maps.places.Autocomplete(
     document.getElementById('search-with-text-origin'));
@@ -182,3 +182,70 @@ function listenForDestinationChange() {
     document.getElementById('search-with-text-destination'));
     destinationAutocompleteText.bindTo('bounds', map);
 }
+
+function geocodeLocationsOrigin() {
+  // Initialize the geocoder.
+  var originAddress = document.getElementById('search-with-text-origin').value;
+  var geocoder = new google.maps.Geocoder();
+  if (originAddress == '') {
+    alert('Nothing entered in origin');
+  } else {
+        geocoder.geocode(
+        { address: originAddress
+        }, 
+        function(results, status) {
+          if (status === google.maps.GeocoderStatus.OK) {
+            origin = results[0].geometry.location;
+            geocodeLocationsDestination();
+          } else {
+            window.alert('We could not find that location - try entering a more' +
+                ' specific place.');
+          }
+        }
+      );
+  }
+  
+}
+
+function geocodeLocationsDestination() {
+  // Initialize the geocoder.
+  var originAddress = document.getElementById('search-with-text-destination').value;
+  var geocoder = new google.maps.Geocoder();
+  if (originAddress == '') {
+    alert('Nothing entered in destination');
+  } else { 
+    geocoder.geocode(
+    { address: originAddress
+    }, 
+    function(results, status) {
+      if (status === google.maps.GeocoderStatus.OK) {
+        destination = results[0].geometry.location;
+        fireUpDirectionServices();
+      } else {
+        window.alert('We could not find that location - try entering a more' +
+            ' specific place.');
+      }
+    }
+   );
+
+  }
+  
+}
+
+function fireUpDirectionServices() {
+  clearThingsOnMap();
+  directionsDisplay.setMap(map); 
+  calculateAndDisplayRoute(directionsService, directionsDisplay);
+}
+
+function clearThingsOnMap(){
+  directionsDisplay.setMap(null); 
+  hideMarkers(markers);
+}
+
+function hideMarkers(markers) {
+  for (var i = 0; i < markers.length; i++) {
+    markers[i].setMap(null);
+  }
+}
+
