@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" type="text/css" href="index.css">
+    <link rel="stylesheet" type="text/css" href="css/index.css">
   </head>
   <body>
   <input type="file" id="files" multiple>
@@ -13,14 +13,14 @@
     <b>End:</b>
       <input id="search-with-text" type="text" placeholder="Ex: Kikuyu">
     <br>
-      <input type="submit" id="submit">
+      <input type="submit" id="submit" value="Show route">
     </div>
-    <div id="directions-panel"></div>
+    <div id="directions-pane"></div>
 
     <script src="http://code.jquery.com/jquery-1.8.2.js"></script>
     <script src="http://code.jquery.com/ui/1.9.0/jquery-ui.js"></script>
-    <script type="text/javascript" src="index.js"></script>
-    <script src="papaparse.min.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+    <script src="js/papaparse.min.js"></script>
 
     <script async defer 
 	  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCpue6nMkQccPrHEWC3t_Qgysog0am15Mw&libraries=places,geometry,drawing&callback=initMap"
